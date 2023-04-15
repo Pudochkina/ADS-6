@@ -7,43 +7,43 @@ template<typename T, int size>
 class TPQueue {
  private:
     T* arr;
-    int first, last, count;
+    int frst, lst, cnt;
 
  public:
-    TPQueue() : first(0), last(0), count(0) {
+    TPQueue() : frst(0), lst(0), cnt(0) {
         arr = new T[size];
     }
     ~TPQueue() {
         delete[] arr;
     }
-    bool isEmpty() const {
-        return 0 == count;
-    }
-    bool isFull() const {
-        return size == count;
+    const T& pop() {
+       if (isEmpty()) {
+           throw std::string("Empty!");
+       }
+       cnt--;
+       return arr[frst++ % size];
     }
     void push(const T& value) {
         if (isFull()) {
             throw std::string("Full!");
         } else {
-            int l = last;
-            for (int i = last; i > first; i--) {
+            int temp = lst;
+            for (int i = lst; i > frst; i--) {
                 if (arr[i - 1].prior < value.prior) {
-                    l = i - 1;
+                    temp = i - 1;
                     arr[i % size] = arr[i - 1];
                 }
             }
-            arr[l % size] = value;
-            count++;
-            last++;
+            arr[temp % size] = value;
+            cnt++;
+            lst++;
         }
     }
-    const T& pop() {
-        if (isEmpty()) {
-            throw std::string("empty");
-            }
-        count--;
-        return arr[first++ % size];
+    bool isEmpty() const {
+        return 0 == cnt;
+    }
+    bool isFull() const {
+        return size == cnt;
     }
 };
 
